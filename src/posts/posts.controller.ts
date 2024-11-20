@@ -11,6 +11,10 @@ import {
 import { PostsService } from './providers/posts.service';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
+import { CreateCommentDto } from './dtos/create-comment.dto';
+import { PatchCommentDto } from './dtos/patch-comment.dto';
+import { DeleteCommentDto } from './dtos/delete-comment.dto';
+import { DeletePostDto } from './dtos/delete-post.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -32,9 +36,22 @@ export class PostsController {
   }
 
   @Delete()
-  public async deletePost(@Query('id', ParseIntPipe) id: number) {
-    console.log('id', id);
-    
-    return this.postsService.deletePost(id);
+  public async deletePost(@Query('id', ParseIntPipe) id: number, @Body() deletePostDto: DeletePostDto) {
+    return this.postsService.deletePost(id, deletePostDto);
+  }
+
+  @Post('/comment')
+  public async createComment(@Body() createCommentDto: CreateCommentDto) {
+    return this.postsService.createCommentPost(createCommentDto);
+  }
+
+  @Patch('/comment')
+  public async editComment(@Body() patchCommentDto: PatchCommentDto) {
+    return this.postsService.updateComment(patchCommentDto);
+  }
+
+  @Delete('/comment')
+  public async deleteComment(@Query('id', ParseIntPipe) id: number, @Body() deleteCommentDto: DeleteCommentDto) {
+    return this.postsService.deleteComment(id, deleteCommentDto)
   }
 }

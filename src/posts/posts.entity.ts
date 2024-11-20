@@ -40,6 +40,6 @@ export class Post {
   })
   postTypeId: number;
 
-  @OneToMany(() => Comment, (comment) => comment)
+  @OneToMany(() => Comment, (comment) => comment.post, {cascade: true})
   comment: Comment[]
 }
