@@ -15,18 +15,32 @@ import { CreateCommentDto } from './dtos/create-comment.dto';
 import { PatchCommentDto } from './dtos/patch-comment.dto';
 import { DeleteCommentDto } from './dtos/delete-comment.dto';
 import { DeletePostDto } from './dtos/delete-post.dto';
+import { GetPostDto } from './dtos/get-post.dto';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  public async getList() {
-    return this.postsService.getListPosts();
+  public async getList(
+    @Query('id') id?: number,
+    @Query('keyword') keyword?: string,
+  ) {
+    if (id) {
+      return await this.postsService.getPostById(+id);
+    }
+
+    if (keyword) {
+      return await this.postsService.searchPostsByKeyword(keyword);
+    }
+
+    return await this.postsService.getListPosts();
   }
 
   @Post()
   public async create(@Body() createPostDto: CreatePostDto) {
+    console.log('createPostDto', createPostDto);
+    
     return this.postsService.createPost(createPostDto);
   }
 
@@ -36,7 +50,10 @@ export class PostsController {
   }
 
   @Delete()
-  public async deletePost(@Query('id', ParseIntPipe) id: number, @Body() deletePostDto: DeletePostDto) {
+  public async delete(
+    @Query('id', ParseIntPipe) id: number,
+    @Body() deletePostDto: DeletePostDto,
+  ) {
     return this.postsService.deletePost(id, deletePostDto);
   }
 
@@ -51,7 +68,11 @@ export class PostsController {
   }
 
   @Delete('/comment')
-  public async deleteComment(@Query('id', ParseIntPipe) id: number, @Body() deleteCommentDto: DeleteCommentDto) {
-    return this.postsService.deleteComment(id, deleteCommentDto)
+  public async deleteComment(
+    @Query('id', ParseIntPipe) id: number,
+    @Body() deleteCommentDto: DeleteCommentDto,
+  ) {
+    return this.postsService.deleteComment(id, deleteCommentDto);
   }
+
 }

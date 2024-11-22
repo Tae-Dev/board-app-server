@@ -1,6 +1,18 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { PostType } from './posts-type.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
 import { Comment } from './comments.entity';
+import { PostType } from 'src/master-data/post-type/posts-type.entity';
+import * as moment from 'moment-timezone';
 
 @Entity()
 export class Post {
@@ -26,20 +38,35 @@ export class Post {
     length: 96,
     nullable: false,
   })
-  userName: string
+  userName: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    type: 'timestamptz',
+    transformer: {
+      to: (value: Date) => value,
+      from: (value: string) => moment.tz(value, 'Asia/Bangkok').toDate(),
+    },
+  })
   createDate: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    type: 'timestamptz',
+    transformer: {
+      to: (value: Date) => value,
+      from: (value: string) => moment.tz(value, 'Asia/Bangkok').toDate(),
+    },
+  })
   updateDate: Date;
 
   @Column({
     type: 'int',
-    nullable: false
+    nullable: false,
   })
-  postTypeId: number;
+  postTypeId: number
 
-  @OneToMany(() => Comment, (comment) => comment.post, {cascade: true})
-  comment: Comment[]
+  @ManyToOne(() => PostType, (postType) => postType.posts, { nullable: false })
+  postType: PostType;
+
+  @OneToMany(() => Comment, (comment) => comment.post, { cascade: true })
+  comment: Comment[];
 }

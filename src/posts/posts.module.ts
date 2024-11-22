@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PostType } from './posts-type.entity';
 import { PostsController } from './posts.controller';
 import { Post } from './posts.entity';
 import { PostsService } from './providers/posts.service';
 import { Comment } from './comments.entity';
+import { PostType } from 'src/master-data/post-type/posts-type.entity';
 
 @Module({
   controllers: [PostsController],

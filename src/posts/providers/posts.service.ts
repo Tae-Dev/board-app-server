@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   RequestTimeoutException,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
@@ -13,6 +14,7 @@ import { Comment } from '../comments.entity';
 import { PatchCommentDto } from '../dtos/patch-comment.dto';
 import { DeleteCommentDto } from '../dtos/delete-comment.dto';
 import { DeletePostDto } from '../dtos/delete-post.dto';
+import { GetPostDto } from '../dtos/get-post.dto';
 
 @Injectable()
 export class PostsService {
@@ -27,7 +29,89 @@ export class PostsService {
   public async getListPosts() {
     let posts = undefined;
     try {
-      posts = await this.postsRepository.find();
+       posts = await this.postsRepository
+      .createQueryBuilder('post')
+      .leftJoin('post.comment', 'comment')
+      .leftJoin('post.postType', 'postType')
+      .loadRelationCountAndMap('post.commentCount', 'post.comment')
+      .select([
+        'post.id',
+        'post.title',
+        'post.description',
+        'post.userName',
+        'post.createDate',
+        'post.updateDate',
+        'postType.id',
+        'postType.title',
+      ])
+      .orderBy('post.updateDate', 'DESC')
+      .getMany();
+    } catch (error) {
+      throw new RequestTimeoutException(error);
+    }
+    return posts;
+  }
+
+  public async searchPostsByKeyword(keyword: string) {
+    const posts = await this.postsRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.postType', 'postType')
+      .where('post.title LIKE :keyword', { keyword: `%${keyword}%` })
+      .select([
+        'post.id',
+        'post.title',
+        'post.description',
+        'post.userName',
+        'post.createDate',
+        'post.updateDate',
+        'postType.id',
+        'postType.title',
+      ])
+      .orderBy('post.updateDate', 'DESC')
+      .getMany();
+  
+    return posts;
+  }
+
+  public async getPostById(id: number) {
+    const post = await this.postsRepository
+    .createQueryBuilder('post')
+    .leftJoinAndSelect('post.postType', 'postType')
+    .leftJoinAndSelect('post.comment', 'comment')
+    .where('post.id = :id', { id })
+    .orderBy('comment.updateDate', 'DESC')
+    .select([
+      'post.id',
+      'post.title',
+      'post.description',
+      'post.userName',
+      'post.createDate',
+      'post.updateDate',
+      'postType.id',
+      'postType.title',
+      'comment.id',
+      'comment.comment',
+      'comment.userNameComment',
+      'comment.createDate',
+      'comment.updateDate',
+    ])
+    .getOne();
+  
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${id} not found`);
+    }
+  
+    return post;
+  }
+
+  public async getPostsById(id: number) {
+    let posts = undefined;
+    try {
+       posts = await this.postsRepository.findOne({
+        where: {id: id},
+        relations: ['postType']
+       })
+
     } catch (error) {
       throw new RequestTimeoutException(error);
     }
@@ -59,13 +143,15 @@ export class PostsService {
     }
 
     try {
-        isEdit = await this.postsRepository.findOneBy({userName: patchPostDto.userName})
+      isEdit = await this.postsRepository.findOneBy({
+        userName: patchPostDto.userName,
+      });
     } catch (error) {
-        throw new RequestTimeoutException(error);
+      throw new RequestTimeoutException(error);
     }
 
-    if(!isEdit){
-        throw new BadRequestException('Unable to edit post');
+    if (!isEdit) {
+      throw new BadRequestException('Unable to edit post');
     }
 
     // Update post
@@ -150,7 +236,7 @@ export class PostsService {
     }
 
     try {
-        isEdit = await this.commentRepository.findOneBy({
+      isEdit = await this.commentRepository.findOneBy({
         userNameComment: patchCommentDto.userName,
       });
     } catch (error) {
