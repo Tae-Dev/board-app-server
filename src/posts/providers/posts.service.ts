@@ -52,11 +52,12 @@ export class PostsService {
     return posts;
   }
 
-  public async searchPostsByKeyword(keyword: string) {
+  public async searchPostsByKeyword(keyword: string, postTypeId: number) {
     const posts = await this.postsRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.postType', 'postType')
       .where('post.title LIKE :keyword', { keyword: `%${keyword}%` })
+      .andWhere('post.postTypeId = :postTypeId', { postTypeId })
       .select([
         'post.id',
         'post.title',

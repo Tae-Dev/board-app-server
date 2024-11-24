@@ -25,13 +25,14 @@ export class PostsController {
   public async getList(
     @Query('id') id?: number,
     @Query('keyword') keyword?: string,
+    @Query('postTypeId') postTypeId?: number,
   ) {
     if (id) {
       return await this.postsService.getPostById(+id);
     }
 
-    if (keyword) {
-      return await this.postsService.searchPostsByKeyword(keyword);
+    if (keyword || postTypeId) {
+      return await this.postsService.searchPostsByKeyword(keyword, postTypeId);
     }
 
     return await this.postsService.getListPosts();
@@ -39,8 +40,6 @@ export class PostsController {
 
   @Post()
   public async create(@Body() createPostDto: CreatePostDto) {
-    console.log('createPostDto', createPostDto);
-    
     return this.postsService.createPost(createPostDto);
   }
 

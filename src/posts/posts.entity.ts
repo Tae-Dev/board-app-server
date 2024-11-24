@@ -1,18 +1,16 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
-import { Comment } from './comments.entity';
-import { PostType } from 'src/master-data/post-type/posts-type.entity';
 import * as moment from 'moment-timezone';
+import { PostType } from 'src/master-data/post-type/posts-type.entity';
+import { Comment } from './comments.entity';
 
 @Entity()
 export class Post {
@@ -42,19 +40,19 @@ export class Post {
 
   @CreateDateColumn({
     type: 'timestamptz',
-    transformer: {
-      to: (value: Date) => value,
-      from: (value: string) => moment.tz(value, 'Asia/Bangkok').toDate(),
-    },
+    // transformer: {
+    //   to: (value: Date) => value,
+    //   from: (value: string) => moment.tz(value, 'Asia/Bangkok').toDate(),
+    // },
   })
   createDate: Date;
 
   @UpdateDateColumn({
     type: 'timestamptz',
-    transformer: {
-      to: (value: Date) => value,
-      from: (value: string) => moment.tz(value, 'Asia/Bangkok').toDate(),
-    },
+    // transformer: {
+    //   to: (value: Date) => value,
+    //   from: (value: string) => moment.tz(value, 'Asia/Bangkok').toDate(),
+    // },
   })
   updateDate: Date;
 

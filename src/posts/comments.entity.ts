@@ -4,11 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 import { Post } from './posts.entity';
+import * as moment from 'moment-timezone';
 
 @Entity()
 export class Comment {
@@ -29,10 +29,22 @@ export class Comment {
   })
   userNameComment: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    type: 'timestamptz',
+    // transformer: {
+    //   to: (value: Date) => value,
+    //   from: (value: string) => moment.tz(value, 'Asia/Bangkok').toDate(),
+    // },
+  })
   createDate: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    type: 'timestamptz',
+    // transformer: {
+    //   to: (value: Date) => value,
+    //   from: (value: string) => moment.tz(value, 'Asia/Bangkok').toDate(),
+    // },
+  })
   updateDate: Date;
 
   @ManyToOne(() => Post, (post) => post.comment, { onDelete: 'CASCADE' })
