@@ -27,8 +27,8 @@ Database: ใช้ฐานข้อมูล PostgreSQL
 ```
 Posts Table:
 - id: Primary Key
-- title: ชื่อบล็อก
-- description: เนื้อหาบล็อก
+- title: ชื่อ Blog
+- description: เนื้อหา Blog
 - userName: username ของ user
 - createdDate: วันที่สร้าง
 - updatedDate: วันที่แก้ไขล่าสุด
