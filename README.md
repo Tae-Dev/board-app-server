@@ -1,99 +1,76 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Board app client
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ npm install
+## ขั้นตอนการติดตั้ง
+```
+1. Clone repository
+2. npm install
+3. สร้างไฟล์ .env.development (env ตัวอย่างจะอยู่ในไฟล์ .env.example)
+4. สร้างฐานข้อมูล PostgreSQL
+      docker-compose up -d
+4. npm run start:dev
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+## การออกแบบสถาปัตยกรรมของแอปพลิเคชัน
+ **ภาพรวม**
+```
+ประกอบด้วย 3 ส่วน:
+Frontend: Next.js ใช้สำหรับแสดง UI
+Backend: ใช้ Nestjs สำหรับสร้าง service และเชื่อมค่อฐานข้อมูล
+Database: ใช้ฐานข้อมูล PostgreSQL
 ```
 
-## Run tests
+**การออกแบบฐานข้อมูล**
+```
+![](https://private-user-images.githubusercontent.com/58415297/389472986-a6c81942-308d-4c43-8a8a-2b458d6aadad.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzI1MjkyODEsIm5iZiI6MTczMjUyODk4MSwicGF0aCI6Ii81ODQxNTI5Ny8zODk0NzI5ODYtYTZjODE5NDItMzA4ZC00YzQzLThhOGEtMmI0NThkNmFhZGFkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDExMjUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQxMTI1VDEwMDMwMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTM0Yzg1MzZjNzQ1ZWIxNTdkYmZkZDBjMGJjNDM3ODY1OGQ3ZGRiNzk3MDY2YmRlZTEyOTIxMjA1OWU4NWVjOGQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.8m-TOg0bmEO_3uah72d4zBmIzZoDLqkaN4Yu2dghqfc)
 
-```bash
-# unit tests
-$ npm run test
 
-# e2e tests
-$ npm run test:e2e
+Posts Table:
+- id: Primary Key
+- title: ชื่อบล็อก
+- description: เนื้อหาบล็อก
+- userName: username ของ user
+- createdDate: วันที่สร้าง
+- updatedDate: วันที่แก้ไขล่าสุด
+- postTypeId: Foreign Key (เชื่อมกับ PostType)
 
-# test coverage
-$ npm run test:cov
+Comments Table:
+- id: Primary Key
+- comment: เนื้อหาความคิดเห็น
+- userNameComment: username ของ user
+- createdDate: วันที่แสดงความคิดเห็น
+- updatedDate: วันที่แก้ไขความคิดเห็น
+- postId: Foreign Key (เชื่อมกับ Post)
+
+PostType Table:
+- id: Primary Key
+- title: ชื่อประเภทของ blog
 ```
 
-## Deployment
+**API Flow**
+```
+Dashboard Home:
+- ส่งคำขอ GET ไปที่ API /api/posts เพื่อดึงรายการโพสต์ทั้งหมด
+- ส่งคำขอ GET ไปที่ API /api/posts?keyword=?postTypeId= เพื่อดึงรายการค้นหาด้วย keyword และ postTypeId
+- ส่งคำขอ GET ไปที่ API /api/posts?id= เพื่อดึงรายการ Blog by id
+- ส่งคำขอ POST ไปที่ /api/posts เพื่อสร้าง Blog
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Dashboard Our Blog:
+- ส่งคำขอ PATCH ไปที่ /api/posts,{id} เพื่อแก้ไข Blog
+- ส่งคำขอ DELETE ไปที่ /api/posts?id,{userName} เพื่อลบ Blog
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
+ฺBlog Detail:
+- ส่งคำขอ POST ไปที่ /api/posts/comment เพื่อสร้าง Comment
+- ส่งคำขอ PATCH ไปที่ /api/posts/comment เพื่อแก้ไข Comment
+- ส่งคำขอ DELETE ไปที่ /api/posts/comment เพื่อลบ Comment
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## libraries/packages
+```
+1. pg: เชื่อมต่อและจัดการฐานข้อมูล PostgreSQL
+2. typeorm: สร้างและจัดการ entities ในฐานข้อมูล
+3. cross-env: เพื่อกำหนดค่า environment
+4. class-validator: ตรวจสอบความถูกต้องของข้อมูลใน class
+5. class-transformer: แปลงข้อมูล
+6. moment: สำหรับจัดการวันที่และเวลา
+```

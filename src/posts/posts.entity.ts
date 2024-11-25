@@ -40,19 +40,11 @@ export class Post {
 
   @CreateDateColumn({
     type: 'timestamptz',
-    // transformer: {
-    //   to: (value: Date) => value,
-    //   from: (value: string) => moment.tz(value, 'Asia/Bangkok').toDate(),
-    // },
   })
   createDate: Date;
 
   @UpdateDateColumn({
     type: 'timestamptz',
-    // transformer: {
-    //   to: (value: Date) => value,
-    //   from: (value: string) => moment.tz(value, 'Asia/Bangkok').toDate(),
-    // },
   })
   updateDate: Date;
 

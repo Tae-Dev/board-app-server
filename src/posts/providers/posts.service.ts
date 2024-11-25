@@ -53,11 +53,9 @@ export class PostsService {
   }
 
   public async searchPostsByKeyword(keyword: string, postTypeId: number) {
-    const posts = await this.postsRepository
+    const query = await this.postsRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.postType', 'postType')
-      .where('post.title LIKE :keyword', { keyword: `%${keyword}%` })
-      .andWhere('post.postTypeId = :postTypeId', { postTypeId })
       .select([
         'post.id',
         'post.title',
@@ -69,9 +67,18 @@ export class PostsService {
         'postType.title',
       ])
       .orderBy('post.updateDate', 'DESC')
-      .getMany();
-  
-    return posts;
+     
+      if (keyword) {
+        query.andWhere('post.title LIKE :keyword', { keyword: `%${keyword}%` });
+      }
+    
+      if (postTypeId) {
+        query.andWhere('post.postTypeId = :postTypeId', { postTypeId });
+      }
+    
+      const posts = await query.getMany();
+    
+      return posts;
   }
 
   public async getPostById(id: number) {

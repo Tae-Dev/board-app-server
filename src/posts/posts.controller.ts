@@ -16,6 +16,7 @@ import { PatchCommentDto } from './dtos/patch-comment.dto';
 import { DeleteCommentDto } from './dtos/delete-comment.dto';
 import { DeletePostDto } from './dtos/delete-post.dto';
 import { GetPostDto } from './dtos/get-post.dto';
+import { GetPostsQueryDto } from './dtos/get-post-query.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -23,10 +24,9 @@ export class PostsController {
 
   @Get()
   public async getList(
-    @Query('id') id?: number,
-    @Query('keyword') keyword?: string,
-    @Query('postTypeId') postTypeId?: number,
+    @Query() query: GetPostsQueryDto
   ) {
+    const { id, keyword, postTypeId } = query;
     if (id) {
       return await this.postsService.getPostById(+id);
     }
