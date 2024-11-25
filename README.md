@@ -1,4 +1,4 @@
-# Board app client
+# Board app server
 
 ## ขั้นตอนการติดตั้ง
 ```
