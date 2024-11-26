@@ -50,19 +50,17 @@ PostType Table:
 **API Flow**
 ```
 Dashboard Home:
-- ส่งคำขอ GET ไปที่ API /api/posts เพื่อดึงรายการโพสต์ทั้งหมด
-- ส่งคำขอ GET ไปที่ API /api/posts?keyword=?postTypeId= เพื่อดึงรายการค้นหาด้วย keyword และ postTypeId
-- ส่งคำขอ GET ไปที่ API /api/posts?id= เพื่อดึงรายการ Blog by id
-- ส่งคำขอ POST ไปที่ /api/posts เพื่อสร้าง Blog
+- ส่งคำขอ GET ไปที่ API /posts เพื่อดึงรายการโพสต์ทั้งหมด
+- ส่งคำขอ GET ไปที่ API /posts?keyword=?postTypeId= เพื่อดึงรายการค้นหาด้วย keyword และ postTypeId
+- ส่งคำขอ GET ไปที่ API /posts?id= เพื่อดึงรายการ Blog by id
+- ส่งคำขอ POST ไปที่ /posts เพื่อสร้าง Blog
 
 Dashboard Our Blog:
-- ส่งคำขอ PATCH ไปที่ /api/posts,{id} เพื่อแก้ไข Blog
-- ส่งคำขอ DELETE ไปที่ /api/posts?id,{userName} เพื่อลบ Blog
+- ส่งคำขอ PATCH ไปที่ /posts,{id} เพื่อแก้ไข Blog
+- ส่งคำขอ DELETE ไปที่ /posts?id,{userName} เพื่อลบ Blog
 
 ฺBlog Detail:
-- ส่งคำขอ POST ไปที่ /api/posts/comment เพื่อสร้าง Comment
-- ส่งคำขอ PATCH ไปที่ /api/posts/comment เพื่อแก้ไข Comment
-- ส่งคำขอ DELETE ไปที่ /api/posts/comment เพื่อลบ Comment
+- ส่งคำขอ POST ไปที่ /posts/comment,{comment, userName, postId} เพื่อสร้าง Comment
 ```
 
 
