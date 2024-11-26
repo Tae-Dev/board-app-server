@@ -70,6 +70,5 @@ Dashboard Our Blog:
 2. typeorm: สร้างและจัดการ entities ในฐานข้อมูล
 3. cross-env: เพื่อกำหนดค่า environment
 4. class-validator: ตรวจสอบความถูกต้องของข้อมูลใน class
-5. class-transformer: แปลงข้อมูล
 6. moment: สำหรับจัดการวันที่และเวลา
 ```
