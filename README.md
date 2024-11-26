@@ -3,11 +3,11 @@
 ## ขั้นตอนการติดตั้ง
 ```
 1. Clone repository
-2. npm install
+2. ติดตั้ง package โดยใช้คำสั่ง npm install
 3. สร้างไฟล์ .env.development (env ตัวอย่างจะอยู่ในไฟล์ .env.example)
-4. สร้างฐานข้อมูล PostgreSQL
-      docker-compose up -d
-4. npm run start:dev
+4. สร้างฐานข้อมูล PostgreSQL โดยใช้คำสั่ง docker-compose up -d
+5. Migration script เพื่อเพิ่ม master data โดยใช้คำสั่ง npx typeorm migration:run --dataSource dist/data-source.js
+6. npm run start:dev
 ```
 
 ## การออกแบบสถาปัตยกรรมของแอปพลิเคชัน
@@ -15,7 +15,7 @@
 ```
 ประกอบด้วย 3 ส่วน:
 Frontend: Next.js ใช้สำหรับแสดง UI
-Backend: ใช้ Nestjs สำหรับสร้าง service และเชื่อมค่อฐานข้อมูล
+Backend: ใช้ Nestjs สำหรับสร้าง service และเชื่อมต่อฐานข้อมูล
 Database: ใช้ฐานข้อมูล PostgreSQL
 ```
 
@@ -50,19 +50,17 @@ PostType Table:
 **API Flow**
 ```
 Dashboard Home:
-- ส่งคำขอ GET ไปที่ API /api/posts เพื่อดึงรายการโพสต์ทั้งหมด
-- ส่งคำขอ GET ไปที่ API /api/posts?keyword=?postTypeId= เพื่อดึงรายการค้นหาด้วย keyword และ postTypeId
-- ส่งคำขอ GET ไปที่ API /api/posts?id= เพื่อดึงรายการ Blog by id
-- ส่งคำขอ POST ไปที่ /api/posts เพื่อสร้าง Blog
+- ส่งคำขอ GET ไปที่ API /posts เพื่อดึงรายการโพสต์ทั้งหมด
+- ส่งคำขอ GET ไปที่ API /posts?keyword=?postTypeId= เพื่อดึงรายการค้นหาด้วย keyword และ postTypeId
+- ส่งคำขอ GET ไปที่ API /posts?id= เพื่อดึงรายการ Blog by id
+- ส่งคำขอ POST ไปที่ /posts เพื่อสร้าง Blog
 
 Dashboard Our Blog:
-- ส่งคำขอ PATCH ไปที่ /api/posts,{id} เพื่อแก้ไข Blog
-- ส่งคำขอ DELETE ไปที่ /api/posts?id,{userName} เพื่อลบ Blog
+- ส่งคำขอ PATCH ไปที่ /posts,{id} เพื่อแก้ไข Blog
+- ส่งคำขอ DELETE ไปที่ /posts?id,{userName} เพื่อลบ Blog
 
 ฺBlog Detail:
-- ส่งคำขอ POST ไปที่ /api/posts/comment เพื่อสร้าง Comment
-- ส่งคำขอ PATCH ไปที่ /api/posts/comment เพื่อแก้ไข Comment
-- ส่งคำขอ DELETE ไปที่ /api/posts/comment เพื่อลบ Comment
+- ส่งคำขอ POST ไปที่ /posts/comment,{comment, userName, postId} เพื่อสร้าง Comment
 ```
 
 
@@ -72,6 +70,5 @@ Dashboard Our Blog:
 2. typeorm: สร้างและจัดการ entities ในฐานข้อมูล
 3. cross-env: เพื่อกำหนดค่า environment
 4. class-validator: ตรวจสอบความถูกต้องของข้อมูลใน class
-5. class-transformer: แปลงข้อมูล
 6. moment: สำหรับจัดการวันที่และเวลา
 ```

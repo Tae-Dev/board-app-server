@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import databaseConfig from './config/database.config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { PostsController } from './posts/posts.controller';
-import { PostsService } from './posts/providers/posts.service';
-import { PostsModule } from './posts/posts.module';
-import { Post } from './posts/posts.entity';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DataResponseInterceptor } from './common/interceptor/data-response.interceptor';
+import databaseConfig from './config/database.config';
 import { PostTypeController } from './master-data/post-type/post-type.controller';
 import { PostTypeModule } from './master-data/post-type/post-type.module';
+import { PostsController } from './posts/posts.controller';
+import { PostsModule } from './posts/posts.module';
 
 const ENV = process.env.NODE_ENV;
 
